@@ -114,3 +114,61 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 #### Error 3: Pod Memory Eviction (`OOMKilled`)
 *   **The Cause:** Your `Standard_B2ats_v2` burstable virtual machines have run out of memory.
 *   **The Fix:** Lower your container resource limits in `deployment.yaml` or drop the Argo CD web dashboard by migrating to an **Argo CD Core** configuration.
+
+# Screenshots & Validation
+
+## Argo CD Synchronization
+
+Shows the GitOps application status with Healthy and Synced state.
+
+![Argo CD Synchronization](images/argocd-sync-status.png)
+
+---
+
+## Grafana Infrastructure Dashboard
+
+Node CPU, memory, filesystem, and network metrics collected via Prometheus Node Exporter.
+
+![Grafana Dashboard](images/grafana-dashboard.png)
+
+---
+
+## Prometheus Targets
+
+Prometheus successfully scraping node-exporter metrics.
+
+![Prometheus Targets](images/prometheus-targets.png)
+
+---
+
+## Kubernetes Workloads
+
+Application deployment, pods, services, and ReplicaSets running in AKS.
+
+![Kubernetes Deployment](images/kubernetes-deployment.png)
+---
+
+## Application Health Check
+
+Health endpoint verification returning HTTP 200 OK.
+
+![Health Check](images/health-endpoint.png)
+
+---
+
+# Azure Infrastructure
+
+## Azure Kubernetes Service
+
+![AKS Overview](images/azure-aks-overview.png)
+
+---
+## Azure Resource Group
+
+![Azure Resource Group](images/azure-resource-group.png)
+
+---
+
+## Azure Container Registry
+
+![Azure Container Registry](images/azure-acr.png)
