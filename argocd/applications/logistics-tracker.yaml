@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: logistics-tracker
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/dcube-g/Logistics-Tracker---GitOps-Implementation
+    targetRevision: main
+    path: kubernetes/base
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logistic-shipping-prod
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
