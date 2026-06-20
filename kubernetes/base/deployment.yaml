@@ -9,7 +9,7 @@ metadata:
     tier: application
 
 spec:
-  replicas: 2
+  replicas: 3
 
   selector:
     matchLabels:
