@@ -152,7 +152,7 @@ Application deployment, pods, services, and ReplicaSets running in AKS.
 
 Health endpoint verification returning HTTP 200 OK.
 
-![Health Check](images/health-endpoint.png)
+![Health Check](images/health-check.png)
 
 ---
 
@@ -165,10 +165,10 @@ Health endpoint verification returning HTTP 200 OK.
 ---
 ## Azure Resource Group
 
-![Azure Resource Group](images/azure-resource-group.png)
+![Azure Resource Group](images/rg-freelogistics-prod-eastus.png)
 
 ---
 
 ## Azure Container Registry
 
-![Azure Container Registry](images/azure-acr.png)
+![Azure Container Registry](images/acr.png)
