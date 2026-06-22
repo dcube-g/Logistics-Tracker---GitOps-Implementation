@@ -160,7 +160,7 @@ Health endpoint verification returning HTTP 200 OK.
 
 ## Azure Kubernetes Service
 
-![AKS Overview](images/azure-aks-overview.png)
+![AKS Overview](images/azure-kubernetes-service-overview.png)
 
 ---
 ## Azure Resource Group
