@@ -1,0 +1,319 @@
+   69  sudo apt install -y kubelet kubeadm kubectl
+   89  az login
+   91  az vm user update   -g rg-india-kubeadm-platform   -n worker-node   -u azureuser   --ssh-key-value ~/.ssh/id_rsa.pub
+   92  az vm user update
+   93  az vm extension delete   -g rg-india-kubeadm-platform   --vm-name worker-node   -n VMAccessForLinux
+   94  az vm restart   -g rg-india-kubeadm-platform   -n worker-node
+   96  az vm extension list   -g rg-india-kubeadm-platform   --vm-name worker-node -o table
+   97  az vm extension delete   -g rg-india-kubeadm-platform   --vm-name worker-node   -n enablevmaccess
+   98  az vm restart   -g rg-india-kubeadm-platform   -n worker-node
+   99  az vm update   -g rg-india-kubeadm-platform   -n worker-node   --set osProfile.linuxConfiguration.ssh.publicKeys[0].keyData="$(cat ~/.ssh/id_rsa.pub)"
+  100  az vm delete   -g rg-india-kubeadm-platform   -n worker-node   --yes
+  101  rebuild cluster cleanlyaz vm delete   -g rg-india-kubeadm-platform   -n worker-node   --yes
+  102  az vm delete   -g rg-india-kubeadm-platform   -n worker-node   --yes
+  103  az vm delete   -g rg-india-kubeadm-platform   -n master-node   --yes
+  129  az network nic ip-config update   --resource-group rg-india-kubeadm-platform   --nic-name worker-nic   --name internal   --remove publicIpAddress
+  130  az network nic ip-config update   --resource-group rg-india-kubeadm-platform   --nic-name master-nic   --name internal   --remove publicIpAddress
+  131  az network nic show   -g rg-india-kubeadm-platform   -n worker-nic   --query "ipConfigurations[].publicIpAddress"
+  144  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  145  chmod +x kubectl
+  146  sudo mv kubectl /usr/local/bin/
+  147  kubectl version --client
+  148  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  149  az login
+  150  az group create `
+  153  az group create `
+  158  az login
+  159  az group create   --name rg-k8s-dev-eastus-001   --location eastus
+  160  az network vnet create   --resource-group rg-k8s-dev-eastus-001   --name vnet-k8s-dev-eastus-001   --address-prefix 10.10.0.0/16   --subnet-name snet-k8s-cluster-dev-eastus-001   --subnet-prefix 10.10.1.0/24
+  161  az network nsg create   --resource-group rg-k8s-dev-eastus-001   --name nsg-k8s-dev-eastus-001
+  162  az network nsg rule create   --resource-group rg-k8s-dev-eastus-001   --nsg-name nsg-k8s-dev-eastus-001   --name allow-ssh   --priority 100   --direction Inbound   --access Allow   --protocol Tcp   --destination-port-ranges 22
+  166  az vm create   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --image Ubuntu2204   --size Standard_D2s_v3   --admin-username azureuser   --ssh-key-values ~/.ssh/id_rsa.pub   --vnet-name vnet-k8s-dev-eastus-001   --subnet snet-k8s-cluster-dev-eastus-001
+  167  az vm list-skus --location eastus --resource-type virtualMachines --output table
+  169  az group create   --name rg-k8s-dev-eastus-001   --location eastus
+  170  az network vnet create   --resource-group rg-k8s-dev-eastus-001   --name vnet-k8s-dev-eastus-001   --address-prefix 10.10.0.0/16   --subnet-name snet-k8s-cluster-dev-eastus-001   --subnet-prefix 10.10.1.0/24
+  171  az network nsg create   --resource-group rg-k8s-dev-eastus-001   --name nsg-k8s-dev-eastus-001
+  172  az network nsg rule create   --resource-group rg-k8s-dev-eastus-001   --nsg-name nsg-k8s-dev-eastus-001   --name allow-ssh   --priority 100   --access Allow   --protocol Tcp   --direction Inbound   --destination-port-ranges 22
+  173  az network nsg rule create   --resource-group rg-k8s-dev-eastus-001   --nsg-name nsg-k8s-dev-eastus-001   --name allow-ssh   --priority 100   --access Allow   --protocol Tcp   --direction Inbound   --destination-port-ranges 22
+  175  az vm create   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --image Ubuntu2204   --size Standard_D2ls_v7   --admin-username azureuser   --ssh-key-values ~/.ssh/id_rsa.pub   --vnet-name vnet-k8s-dev-eastus-001   --subnet snet-k8s-cluster-dev-eastus-001
+  176  az vm create   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-wn01-dev-eastus   --image Ubuntu2204   --size Standard_D2ls_v7   --admin-username azureuser   --ssh-key-values ~/.ssh/id_rsa.pub   --vnet-name vnet-k8s-dev-eastus-001   --subnet snet-k8s-cluster-dev-eastus-001
+  177  az vm show   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   -d   --query publicIps   -o tsv
+  178  az vm show   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-wn01-dev-eastus   -d   --query publicIps   -o tsv
+  186  git init
+  312  kubectl get nodes -o wide
+  317  az network nsg rule list   --resource-group rg-k8s-dev-eastus   --nsg-name vm-k8s-cp01-dev-eastusNSG   -o table
+  318  az group list --query "[].name" -o tsv
+  319  az vm list -d -g rg-k8s-dev-eastus-001 -o table
+  320  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-c
+  322  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31917
+  323  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31842
+  325  az network nsg rule list   --resource-group rg-k8s-dev-eastus-001   --query "[?contains(name,'open-port')].[name,priority,destinationPortRange]"   -o table
+  327  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31917
+  329  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31917
+  336  git remote set-url origin git@github.com:dcube-g/azure-ansible-kubernetes-platform.git
+  337  git remote -v
+  341  git remote -v
+  342  git remote set-url origin git@github.com:dcube-g/azure-ansible-kubernetes-platform.git
+  343  git remote add origin git@github.com:dcube-g/azure-ansible-kubernetes-platform.git
+  344  git add .
+  345  git commit -m "Completed Azure Kubernetes GitOps Platform"
+  346  git push -u origin main
+  347  git branch
+  348  git branch -M main
+  349  git push -u origin main
+  350  git push -u origin master
+  352  git status
+  353  git branch -a
+  354  git log --oneline
+  356  git add .
+  357  git commit -m "Initial commit - Azure Ansible Kubernetes GitOps Platform"
+  358  git log --oneline -1
+  359  git branch -M main
+  360  git push -u origin main
+  361  git status
+  362  git branch -a
+  363  git log --oneline
+  366  git add README.md
+  367  git commit -m "Add professional project README"
+  368  git push origin main
+  369  git add screenshots/
+  370  git add README.md
+  371  git commit -m "Add project screenshots"
+  372  git push origin main
+  386  git add screenshots/
+  387  git add README.md
+  388  git commit -m "Add project screenshots"
+  389  git push origin main
+  393  git add README.md
+  394  git add screenshots/*
+  395  git commit -m "Add README and project screenshots"
+  396  git push origin main
+  399  git add command-history.txt
+  400  git commit -m "Add project command history"
+  401  git push origin main
+  408  for RG in "${RESOURCE_GROUPS[@]}"; do     echo "Deleting resource group: $RG";     az group delete         --name "$RG"         --yes         --no-wait; done
+  410  az login
+  412  az login
+  414  az group delete --name rg-k8s-dev-eastus-001 --yes --no-wait
+  415  az login
+  419  sudo apt install git curl apt-transport-https ca-certificates gnupg -y
+  425  sudo apt update && sudo apt install -y kubectl
+  430  az login
+  431  `az login --use-device-code
+  432  az login --use-device-code
+  468  git init
+  470  git checkout -b main
+  472  git add .
+  474  git commit -m "feat: establish automated OIDC pipeline workflows, GitOps manifests, and board issue assets"
+  477  git remote add origin https://github.com
+  479  git push -u origin main
+  480  git config --global user.name "Your Name"
+  481  git config --global user.email you@example.com
+  482  git config --global user.name dcube-g
+  483  git config --global user.email degee_z@outlook.com 
+  484  git commit --amend --reset-author --no-edit
+  485  git remote remove origin
+  486  git remote add origin https://github.com
+  487  git push -u origin main
+  488  git remote remove origin
+  489  git remote add origin https://github.com/dcube-g/Logistics-Tracker---GitOps-Implementation
+  490  git push -u origin main
+  493  git push -u origin main
+  494  # 1. Re-configure your git email to use the private GitHub no-reply address
+  495  git config --global user.email "ID+dcube-g@users.noreply.github.com"
+  496  # 2. Re-confirm your git username
+  497  git config --global user.name "dcube-g"
+  498  git commit --amend --reset-author --no-edit
+  499  git push -u origin main
+  511  az group create --name rg-freelogistics-prod-eastus --location eastus
+  513  az acr create --resource-group rg-freelogistics-prod-eastus --name acrfreelogistics --sku Basic
+  515  az aks create   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --tier free   --node-count 2   --node-vm-size Standard_B2ats_v2   --attach-acr acrfreelogistics   --enable-managed-identity
+  516  # 4. Bind local kubectl tool focus to the new Azure cluster context
+  517  az aks get-credentials --resource-group rg-freelogistics-prod-eastus --name aks-freelogistics-prod-01
+  519  az group create --name rg-freelogistics-prod-eastus --location eastus
+  521  az acr create --resource-group rg-freelogistics-prod-eastus --name acrfreelogistics --sku Basic
+  523  az aks create   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --tier free   --node-count 2   --node-vm-size Standard_B2ats_v2   --attach-acr acrfreelogistics   --enable-managed-identity
+  524  # 4. Bind local kubectl tool focus to the new Azure cluster context
+  525  az aks get-credentials --resource-group rg-freelogistics-prod-eastus --name aks-freelogistics-prod-01
+  526  az aks show   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01
+  528  az group create --name rg-freelogistics-prod-eastus --location eastus
+  530  az acr create --resource-group rg-freelogistics-prod-eastus --name acrfreelogistics --sku Basic
+  532  az aks create   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --tier free   --node-count 2   --node-vm-size Standard_B2ats_v2   --attach-acr acrfreelogistics   --enable-managed-identity
+  533  # 4. Connect local kubectl tool to the new Azure cluster context
+  534  az aks get-credentials --resource-group rg-freelogistics-prod-eastus --name aks-freelogistics-prod-01
+  535  az aks install-cli
+  537  az --version
+  538  kubectl version --client
+  539  helm version
+  540  git --version
+  549  az version
+  550  az version help
+  551  az version ?
+  558  az acr check-name --name $ACR_NAME
+  561  az group create   --name $RESOURCE_GROUP   --location $LOCATION
+  562  az network vnet create   --resource-group $RESOURCE_GROUP   --name $VNET_NAME   --address-prefix 10.0.0.0/8   --subnet-name aks-subnet   --subnet-prefix 10.240.0.0/16
+  563  az network vnet create   --resource-group $RESOURCE_GROUP   --name $VNET_NAME   --address-prefix 10.0.0.0/8   --subnet-name aks-subnet   --subnet-prefix 10.240.0.0/16
+  564  SUBNET_ID=$(az network vnet subnet show \
+  566  az acr create   --resource-group $RESOURCE_GROUP   --name $ACR_NAME   --sku Basic   --admin-enabled true
+  567  az aks create   --resource-group $RESOURCE_GROUP   --name $AKS_CLUSTER   --node-count $NODE_COUNT   --node-vm-size $VM_SIZE   --network-plugin azure   --vnet-subnet-id $SUBNET_ID   --generate-ssh-keys   --tier free
+  568  az vm list-skus --location eastus --output table | grep B
+  572  az aks create   --resource-group $RESOURCE_GROUP   --name $AKS_CLUSTER   --node-count $NODE_COUNT   --node-vm-size $VM_SIZE   --network-plugin azure   --vnet-subnet-id $SUBNET_ID   --generate-ssh-keys   --tier free
+  573  az loginn
+  574  az login
+  575  az login --use-device-code
+  576  az aks create   --resource-group $RESOURCE_GROUP   --name $AKS_CLUSTER   --node-count $NODE_COUNT   --node-vm-size $VM_SIZE   --network-plugin azure   --vnet-subnet-id $SUBNET_ID   --generate-ssh-keys   --tier free
+  579  az aks create   --resource-group $RESOURCE_GROUP   --name $AKS_CLUSTER   --node-count $NODE_COUNT   --node-vm-size $VM_SIZE   --network-plugin azure   --vnet-subnet-id $SUBNET_ID   --generate-ssh-keys   --tier free
+  584  az aks create   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --node-count 1   --node-vm-size Standard_D4s_v7   --generate-ssh-keys   --tier free
+  585  az aks update
+  587  [200~az aks show   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --query "{Name:name,ProvisioningState:provisioningState,PowerState:powerState.code}" \
+  588  az aks show   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --query "{Name:name,ProvisioningState:provisioningState,PowerState:powerState.code}"   --output table
+  589  az aks list   --resource-group rg-freelogistics-prod-eastus   --output table
+  590  az aks get-credentials   --resource-group $RESOURCE_GROUP   --name $AKS_CLUSTER   --overwrite-existing
+  591  kubectl get nodes -o wide
+  592  az aks get-credentials   --resource-group $RESOURCE_GROUP   --name $AKS_CLUSTER   --overwrite-existing
+  593  kubectl get nodes -o wide
+  594  kubectl create namespace logistic-shipping-prod
+  595  kubectl create namespace argocd
+  596  kubectl create namespace infra-monitoring
+  597  kubectl get ns
+  598  az login
+  599  az login --use-device-code
+  600  kubectl get nodes -o wide
+  601  az aks show   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --output table
+  602  az aks get-credentials   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --overwrite-existing
+  603  kubectl get nodes -o wide
+  604  kubectl config current-context
+  605  kubectl cluster-info
+  606  kubectl get nodes -v=6
+  607  az aks get-credentials   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --overwrite-existing
+  608  kubectl get nodes
+  609  az aks show   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --query provisioningState   -o tsv
+  610  kubectl get nodes --request-timeout=20s
+  611  kubectl version --client
+  612  kubectl config view --minify
+  613  az aks show   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --query "{name:name, fqdn:fqdn}"   -o table
+  616  az account show -o table
+  617  time kubectl config get-contexts
+  620  kubectl config view
+  622  az aks get-credentials   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --overwrite-existing
+  623  kubectl config get-contexts
+  624  kubectl config current-context
+  625  kubectl get nodes
+  628  kubectl config view
+  629  kubectl config current-context
+  632  type kubectl
+  633  which kubectl
+  636  az aks get-credentials   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --overwrite-existing
+  639  az aks get-credentials   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --overwrite-existing
+  641  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl get nodes -o wide"
+  642  kubectl version --client
+  643  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl get nodes"
+  644  kubectl create namespace logistic-shipping-prod
+  645  kubectl create namespace argocd
+  646  kubectl create namespace infra-monitoring
+  647  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl get ns"
+  648  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl get pods -n argocd"
+  649  sudo rm -f /usr/local/bin/kubectl
+  650  az aks install-cli
+  651  sudo rm -f /usr/local/bin/kubectl
+  652  az aks install-cli
+  654  curl -LO "https://dl.k8s.io/release/v1.36.2/bin/linux/amd64/kubectl"
+  655  chmod +x kubectl
+  656  sudo mv kubectl /usr/local/bin/
+  657  helm version
+  658  kubectl create namespace logistic-shipping-prod
+  659  kubectl create namespace argocd
+  660  kubectl create namespace infra-monitoring
+  661  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl create namespace logistic-shipping-prod"
+  662  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl create namespace argocd"
+  663  az aks command invoke   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --command "kubectl create namespace infra-monitoring"
+  669  az acr show   --name acrfreelogistics   --resource-group rg-freelogistics-prod-eastus   --output table
+  670  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  671  helm repo add argo https://argoproj.github.io/argo-helm
+  672  helm repo update
+  673  helm install argocd argo/argo-cd   --namespace argocd   --create-namespace
+  674  kubectl delete namespace argocd
+  675  kubectl get ns
+  676  kubectl get namespace argocd -o json > argocd-ns.json
+  677  kubectl get ns
+  678  kubectl delete namespace argocd
+  679  kubectl get ns
+  680  kubectl get namespace argocd -o json > argocd-ns.json
+  682  kubectl get namespace argocd -o json > argocd-ns.json
+  683  kubectl get crd | grep argoproj
+  684  kubectl delete crd applications.argoproj.io
+  685  kubectl delete crd applicationsets.argoproj.io
+  686  kubectl delete crd appprojects.argoproj.io
+  687  kubectl get crd | grep argoproj | awk '{print $1}' | xargs kubectl delete crd
+  688  kubectl create namespace argocd
+  689  helm repo add argo https://argoproj.github.io/argo-helm
+  690  helm repo update
+  691  helm install argocd argo/argo-cd   --namespace argocd
+  692  kubectl get clusterrole | grep argocd
+  693  kubectl get clusterrolebinding | grep argocd
+  694  kubectl get crd | grep argoproj
+  695  kubectl get clusterrole | grep argocd | awk '{print $1}' | xargs kubectl delete clusterrole
+  696  kubectl get crd | grep argoproj | awk '{print $1}' | xargs kubectl delete crd
+  697  kubectl get sa -A | grep argocd
+  698  kubectl create namespace argocd
+  699  kubectl get clusterrolebinding | grep argocd
+  700  kubectl get clusterrolebinding | grep argocd | awk '{print $1}' | xargs -r kubectl delete clusterrolebinding
+  701  kubectl get crd | grep argoproj
+  702  kubectl get all -n argocd
+  703  kubectl get sa -n argocd
+  704  helm install argocd argo/argo-cd   --namespace argocd
+  706  kubectl get pods -n argocd
+  707  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+  709  kubectl port-forward svc/argocd-server -n argocd 8080:443
+  711  kubectl get application logistics-tracker -n argocd -o yaml
+  712  git remote -v
+  715  git remote -v
+  716  kubectl get applications -n argocd
+  717  kubectl describe application logistics-tracker -n argocd
+  718  kubectl edit application logistics-tracker -n argocd
+  719  kubectl annotate application logistics-tracker -n argocd argocd.argoproj.io/refresh=hard --overwrite
+  720  kubectl get applications -n argocd
+  721  argocd repo add https://github.com/dcube-g/Logistics-Tracker---GitOps-Implementation.git --username <github-username> --password <github-personal-access-token>
+  723  https://github.com/dcube-g/Logistics-Tracker---GitOps-Implementation.git --username dcube-g --password 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
+  724  argocd repo add https://github.com/dcube-g/Logistics-Tracker---GitOps-Implementation.git --username dcube-g --password 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
+  725  kubectl get applications -n argocd
+  728  git add kubernetes/base/deployment.yaml
+  729  git commit -m "Scale shipping service to 3 replicas"
+  730  git push origin main
+  731  kubectl get applications -n argocd -w
+  733  kubectl get deployment shipping-service   -n logistic-shipping-prod -w
+  735  kubectl get deployment shipping-service   -n logistic-shipping-prod -w
+  737  kubectl get applications -n argocd -w
+  739  kubectl get applications -n argocd
+  740  kubectl apply --dry-run=client -f kubernetes/base/deployment.yaml
+  742  git add kubernetes/base/deployment.yaml
+  743  git commit -m "Add LoadBalancer service"
+  744  git push origin main
+  745  kubectl get application logistics-tracker -n argocd
+  746  kubectl get svc -n logistic-shipping-prod
+  751  kubectl apply --dry-run=client -f kubernetes/base/deployment.yaml
+  752  kubectl apply --dry-run=client -k kubernetes/base
+  753  kubectl apply --dry-run=client -f kubernetes/base/service.yaml
+  754  kubectl kustomize kubernetes/base
+  757  kubectl kustomize kubernetes/base
+  758  kubectl apply --dry-run=client -f kubernetes/base/service.yaml
+  766  kubectl apply --dry-run=client -f kubernetes/base/service.yaml
+  768  kubectl apply --dry-run=client -f kubernetes/base/service.yaml
+  769  kubectl apply --dry-run=client -k kubernetes/base
+  770  kubectl apply -k kubernetes/base
+  772  kubectl get all -n logistic-shipping-prod
+  776  kubectl port-forward   -n logistic-shipping-prod   deployment/shipping-service   8080:8080
+  779  ps aux | grep "kubectl port-forward"
+  782  kubectl get pods -n infra-monitoring   -l app.kubernetes.io/name=node-exporter
+  783  kubectl get all -n infra-monitoring
+  784  kubectl get pods -n infra-monitoring | grep node-exporter
+  785  kubectl get pods -n infra-monitoring   -l app.kubernetes.io/component=node-exporter
+  786  kubectl describe ds monitoring-prometheus-node-exporter   -n infra-monitoring
+  787  kubectl get pods -n infra-monitoring | grep node-exporter
+  788  kubectl get pods -n infra-monitoring   -l app.kubernetes.io/component=node-exporter
+  789  kubectl get pod monitoring-prometheus-node-exporter-hfkpn   -n infra-monitoring --show-labels
+  790  kubectl get pods -n infra-monitoring   -l app.kubernetes.io/name=prometheus-node-exporter
+  791  kubectl port-forward   -n infra-monitoring   svc/monitoring-kube-prometheus-prometheus   9090:9090
+  792  az aks delete   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --yes   --no-wait
+  793  az acr delete   --resource-group rg-freelogistics-prod-eastus   --name acrfreelogistics   --yes
+  794  history | grep -E "az |kubectl|helm|git " > project-commands.txt

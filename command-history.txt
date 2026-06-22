@@ -1,0 +1,630 @@
+    1  sudo apt update
+    2  sudo apt install -y ansible
+    3  ansible --version
+    4  ps -ef
+    5  uptime
+    6  top
+    7  uptime
+    8  ls  of
+    9  lsof
+   10  sudo apt update
+   11  sudo apt install ansible -y
+   12  ansible
+   13  ansible --version
+   14  clear
+   15  ansible --version
+   16  # 1. Update your Ubuntu package database
+   17  sudo apt update
+   18  # 2. Install Python's package manager and core tools
+   19  sudo apt install -y python3-pip software-properties-common
+   20  # 3. Add the official Ansible PPA repository
+   21  sudo add-apt-repository --yes --update ppa:ansible/ansible
+   22  # 4. Install Ansible natively
+   23  sudo apt install -y ansible
+   24  # 1. Create the secure hidden SSH directory inside WSL
+   25  mkdir -p ~/.ssh
+   26  # 2. Copy your private key from your Windows profile path into WSL
+   27  cp /mnt/c/Users/pandora/.ssh/id_rsa ~/.ssh/id_rsa
+   28  # 3. Enforce strict Linux file permissions (Crucial! SSH will reject keys that are too open)
+   29  chmod 600 ~/.ssh/id_rsa
+   30  # 1. Navigate straight to your project folder on the C drive
+   31  cd /mnt/c/Users/pandora/k8s-provisioning-platform/azure-kubeadm-platform/ansible
+   32  # 2. Download the required Kubernetes orchestration modules
+   33  ansible-galaxy collection install kubernetes.core
+   34  # 3. Fire off your master deployment playbook!
+   35  ansible-playbook -i inventory.ini site.yml# 1. Navigate straight to your project folder on the C drive
+   36  cd /mnt/c/Users/pandora/k8s-provisioning-platform/azure-kubeadm-platform/ansible
+   37  # 2. Download the required Kubernetes orchestration modules
+   38  ansible-galaxy collection install kubernetes.core
+   39  # 3. Fire off your master deployment playbook!
+   40  ansible-playbook -i inventory.ini site.yml
+   41  ls
+   42  clear
+   43  ansible-galaxy collection install kubernetes.core
+   44  ansible-playbook -i inventory.ini site.yml
+   45  ls
+   46  vi site.yml
+   47  ansible-playbook -i inventory.ini site.yml
+   48  ls ~/.ssh
+   49  vi inventory.ini 
+   50  ansible-playbook -i inventory.ini site.yml
+   51  vi site.yml
+   52  cat site.yml
+   53  vi site.yml
+   54  ansible-playbook -i inventory.ini site.yml
+   55  ssh azureuser@20.197.27.40
+   56  ansible-playbook -i inventory.ini site.yml
+   57  ssh azureuser@20.197.27.40
+   58  vi site.yml
+   59  ansible-playbook -i inventory.ini site.yml
+   60  systemctl status containerd
+   61  sudo apt install -y containerd
+   62  sudo systemctl restart containerd
+   63  systemctl status containerd
+   64  kubeadm init ...
+   65  sudo mkdir -p /etc/apt/keyrings
+   66  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+   67  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   68  sudo apt update
+   69  sudo apt install -y kubelet kubeadm kubectl
+   70  sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+   71  kubeadm version
+   72  sudo sysctl -w net.ipv4.ip_forward=1
+   73  echo "net.ipv4.ip_forward=1" | sudo tee /etc/sysctl.d/99-kubernetes.conf
+   74  sudo sysctl --system
+   75  sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+   76  systemctl status kubelet
+   77  sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+   78  uname -a
+   79  sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+   80  # 1. Navigate to your Ansible workspace folder on the C drive
+   81  cd /mnt/c/Users/pandora/k8s-provisioning-platform/azure-kubeadm-platform/ansible
+   82  # 2. Let Ansible connect to Azure and configure containerd automatically
+   83  ansible-playbook -i inventory.ini site.yml
+   84  ssh azureuser@20.197.27.40
+   85  ssh -i ~/.ssh/id_rsa azureuser@20.219.21.24
+   86  ssh azureuser@20.197.27.40
+   87  ssh -i ~/.ssh/id_rsa azureuser@20.219.21.24
+   88  ssh azureuser@20.197.27.40
+   89  az login
+   90  ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa
+   91  az vm user update   -g rg-india-kubeadm-platform   -n worker-node   -u azureuser   --ssh-key-value ~/.ssh/id_rsa.pub
+   92  az vm user update
+   93  az vm extension delete   -g rg-india-kubeadm-platform   --vm-name worker-node   -n VMAccessForLinux
+   94  az vm restart   -g rg-india-kubeadm-platform   -n worker-node
+   95  ls ~/.ssh/id_rsa.pub
+   96  az vm extension list   -g rg-india-kubeadm-platform   --vm-name worker-node -o table
+   97  az vm extension delete   -g rg-india-kubeadm-platform   --vm-name worker-node   -n enablevmaccess
+   98  az vm restart   -g rg-india-kubeadm-platform   -n worker-node
+   99  az vm update   -g rg-india-kubeadm-platform   -n worker-node   --set osProfile.linuxConfiguration.ssh.publicKeys[0].keyData="$(cat ~/.ssh/id_rsa.pub)"
+  100  az vm delete   -g rg-india-kubeadm-platform   -n worker-node   --yes
+  101  rebuild cluster cleanlyaz vm delete   -g rg-india-kubeadm-platform   -n worker-node   --yes
+  102  az vm delete   -g rg-india-kubeadm-platform   -n worker-node   --yes
+  103  az vm delete   -g rg-india-kubeadm-platform   -n master-node   --yes
+  104  ls
+  105  cd ..
+  106  ls
+  107  cd ..
+  108  ls
+  109  cd..
+  110  ls
+  111  cd ..
+  112  ls
+  113  cd k8s-provisioning-platform/
+  114  ls
+  115  cd azure-kubeadm-platform/
+  116  LS
+  117  ls
+  118  cd az
+  119  cd azure-kubeadm-platform/
+  120  LS
+  121  ls
+  122  cd terraform/
+  123  ls
+  124  vi main.tf
+  125  terraform init
+  126  terraform apply -auto-approve
+  127  terraform plan
+  128  terraform apply -auto-approve
+  129  az network nic ip-config update   --resource-group rg-india-kubeadm-platform   --nic-name worker-nic   --name internal   --remove publicIpAddress
+  130  az network nic ip-config update   --resource-group rg-india-kubeadm-platform   --nic-name master-nic   --name internal   --remove publicIpAddress
+  131  az network nic show   -g rg-india-kubeadm-platform   -n worker-nic   --query "ipConfigurations[].publicIpAddress"
+  132  terraform destroy -auto-approve
+  133  #!/bin/bash
+  134  set -e
+  135  echo "=== 1. Navigating to Terraform Directory ==="
+  136  cd /mnt/c/Users/pandora/k8s-provisioning-platform/azure-kubeadm-platform/azure-kubeadm-platform/terraform
+  137  echo "=== 2. Destroying Azure Infrastructure (This takes 2-3 minutes) ==="
+  138  terraform destroy --auto-approve
+  139  wsl --install
+  140  wsl -l -v
+  141  wsl --install
+  142  clear
+  143  exit
+  144  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  145  chmod +x kubectl
+  146  sudo mv kubectl /usr/local/bin/
+  147  kubectl version --client
+  148  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  149  az login
+  150  az group create `
+  151  --name rg-k8s-dev-eastus-001 `
+  152  --location eastus
+  153  az group create `
+  154  --name rg-k8s-dev-eastus-001 `
+  155  --location eastus
+  156  sudo apt update && sudo apt upgrade -y
+  157  curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  158  az login
+  159  az group create   --name rg-k8s-dev-eastus-001   --location eastus
+  160  az network vnet create   --resource-group rg-k8s-dev-eastus-001   --name vnet-k8s-dev-eastus-001   --address-prefix 10.10.0.0/16   --subnet-name snet-k8s-cluster-dev-eastus-001   --subnet-prefix 10.10.1.0/24
+  161  az network nsg create   --resource-group rg-k8s-dev-eastus-001   --name nsg-k8s-dev-eastus-001
+  162  az network nsg rule create   --resource-group rg-k8s-dev-eastus-001   --nsg-name nsg-k8s-dev-eastus-001   --name allow-ssh   --priority 100   --direction Inbound   --access Allow   --protocol Tcp   --destination-port-ranges 22
+  163  ls ~/.ssh
+  164  ssh-keygen -t rsa -b 4096
+  165  ls ~/.ssh
+  166  az vm create   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --image Ubuntu2204   --size Standard_D2s_v3   --admin-username azureuser   --ssh-key-values ~/.ssh/id_rsa.pub   --vnet-name vnet-k8s-dev-eastus-001   --subnet snet-k8s-cluster-dev-eastus-001
+  167  az vm list-skus --location eastus --resource-type virtualMachines --output table
+  168  clear
+  169  az group create   --name rg-k8s-dev-eastus-001   --location eastus
+  170  az network vnet create   --resource-group rg-k8s-dev-eastus-001   --name vnet-k8s-dev-eastus-001   --address-prefix 10.10.0.0/16   --subnet-name snet-k8s-cluster-dev-eastus-001   --subnet-prefix 10.10.1.0/24
+  171  az network nsg create   --resource-group rg-k8s-dev-eastus-001   --name nsg-k8s-dev-eastus-001
+  172  az network nsg rule create   --resource-group rg-k8s-dev-eastus-001   --nsg-name nsg-k8s-dev-eastus-001   --name allow-ssh   --priority 100   --access Allow   --protocol Tcp   --direction Inbound   --destination-port-ranges 22
+  173  az network nsg rule create   --resource-group rg-k8s-dev-eastus-001   --nsg-name nsg-k8s-dev-eastus-001   --name allow-ssh   --priority 100   --access Allow   --protocol Tcp   --direction Inbound   --destination-port-ranges 22
+  174  ls ~/.ssh
+  175  az vm create   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --image Ubuntu2204   --size Standard_D2ls_v7   --admin-username azureuser   --ssh-key-values ~/.ssh/id_rsa.pub   --vnet-name vnet-k8s-dev-eastus-001   --subnet snet-k8s-cluster-dev-eastus-001
+  176  az vm create   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-wn01-dev-eastus   --image Ubuntu2204   --size Standard_D2ls_v7   --admin-username azureuser   --ssh-key-values ~/.ssh/id_rsa.pub   --vnet-name vnet-k8s-dev-eastus-001   --subnet snet-k8s-cluster-dev-eastus-001
+  177  az vm show   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   -d   --query publicIps   -o tsv
+  178  az vm show   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-wn01-dev-eastus   -d   --query publicIps   -o tsv
+  179  ssh azureuser@20.42.101.138
+  180  ssh azureuser@4.157.251.192
+  181  sudo apt update
+  182  sudo apt install ansible -y
+  183  mkdir azure-ansible-kubernetes-platform
+  184  cd azure-ansible-kubernetes-platform
+  185  mkdir -p ansible/inventories/dev ansible/playbooks ansible/roles ansible/templates docs scripts
+  186  git init
+  187  ls
+  188  vi ansible/inventories/dev/hosts.yml
+  189  ansible all -i ansible/inventories/dev/hosts.yml -m ping
+  190  vi ansible/inventories/dev/hosts.yml
+  191  ansible all -i ansible/inventories/dev/hosts.yml -m ping
+  192  ansible all -i ansible/inventories/dev/hosts.yml -m ping -u azureuser --private-key ~/.ssh/id_rsa
+  193  vi ansible/playbooks/node-prep.yml
+  194  ansible-playbook -i ansible/inventories/dev/hosts.yml ansible/playbooks/node-prep.yml --private-key ~/.ssh/id_rsa
+  195  vi ansible/roles/kubernetes/tasks/main.yml
+  196  touch ansible/roles/kubernetes/tasks/main.yml
+  197  ls
+  198  vi ansible/roles/
+  199  cd ansible/roles/
+  200  ls
+  201  ls -l
+  202  mkdir kubernetes
+  203  ls
+  204  cd kubernetes/
+  205  ls
+  206  mkdir tasks
+  207  ls
+  208  cd tasks/
+  209  vi main.yml
+  210  vi ansible/playbooks/kubernetes.yml
+  211  nano ansible/playbooks/kubernetes.yml
+  212  cd..
+  213  cd ..
+  214  cd..
+  215  cd.
+  216  cd..
+  217  cd ..
+  218  ls
+  219  cd playbooks/
+  220  ls
+  221  vi kubernetes.yml
+  222  vi site.yml
+  223  ansible-playbook -i ansible/inventories/dev/hosts.yml ansible/playbooks/site.yml --private-key ~/.ssh/id_rsa
+  224  ls
+  225  cd..
+  226  cd root
+  227  cd root
+  228  cd ./
+  229  cd /
+  230  ansible-playbook -i ansible/inventories/dev/hosts.yml ansible/playbooks/site.yml --private-key ~/.ssh/id_rsa
+  231  ls -R
+  232  cd ansible
+  233  ls
+  234  cd home/
+  235  ls
+  236  cd..
+  237  cd ..
+  238  ls
+  239  find / -type d -name "azure-ansible-kubernetes-platform" 2>/dev/null
+  240  cd /azure-ansible-kubernetes-platform/ansible/playbooks
+  241  ansible-playbook -i ansible/inventories/dev/hosts.yml ansible/playbooks/site.yml --private-key ~/.ssh/id_rsa
+  242  cd ansible
+  243  vi ansible/playbooks/kubernetes.yml
+  244  find / -type d -name "azure-ansible-kubernetes-platform" 2>/dev/null
+  245  mkdir -p /root/azure-ansible-kubernetes-platform
+  246  cd /root/azure-ansible-kubernetes-platform
+  247  mkdir -p ansible/inventories/dev ansible/playbooks ansible/roles/kubernetes/tasks
+  248  find ansible -type d
+  249  cat > ansible/inventories/dev/hosts.yml << 'EOF'
+  250  all:
+  251    children:
+  252      controlplane:
+  253        hosts:
+  254          vm-k8s-cp01-dev-eastus:
+  255            ansible_host: 20.42.101.138
+  256            ansible_user: azureuser
+  257      workers:
+  258        hosts:
+  259          vm-k8s-wn01-dev-eastus:
+  260            ansible_host: 4.157.251.192
+  261            ansible_user: azureuser
+  262  EOF
+  263  cat ansible/inventories/dev/hosts.yml
+  264  ssh azureuser@20.42.101.138
+  265  ansible all -i ansible/inventories/dev/hosts.yml -m ping -u azureuser --private-key ~/.ssh/id_rsa
+  266  ls ~/.ssh
+  267  ssh -i ~/.ssh/id_rsa azureuser@4.157.251.192
+  268  ansible --version
+  269  cd ~/azure-ansible-kubernetes-platform
+  270  ansible all -i ansible/inventories/dev/hosts.yml -m ping -u azureuser --private-key ~/.ssh/id_rsa
+  271  mkdir -p ansible/roles/kubernetes/tasks
+  272  nano ansible/roles/kubernetes/tasks/main.yml
+  273  nano ansible/playbooks/kubernetes.yml
+  274  ansible-playbook -i ansible/inventories/dev/hosts.yml ansible/playbooks/kubernetes.yml -u azureuser --private-key ~/.ssh/id_rsa
+  275  cd ~/azure-ansible-kubernetes-platform
+  276  find . -type d | grep kubernetes
+  277  ls -R ansible/roles
+  278  find . -type d | grep kubernetes
+  279  ./ansible/roles/kubernetes
+  280  ./ansible/roles/kubernetes/tasks
+  281  root@Penguin:~/azure-ansible-kubernetes-platform# ls -R ansible/roles
+  282  ansible/roles:
+  283  kubernetes
+  284  ansible/roles/kubernetes:
+  285  tasks
+  286  ansible/roles/kubernetes/tasks:
+  287  main.yml
+  288  root@Penguin:~/azure-ansible-kubernetes-platform#cd ~/azure-ansible-kubernetes-platform
+  289  cat > ansible.cfg << 'EOF'
+  290  [defaults]
+  291  inventory = ansible/inventories/dev/hosts.yml
+  292  roles_path = ansible/roles
+  293  host_key_checking = False
+  294  EOF
+  295  cd ~/azure-ansible-kubernetes-platform
+  296  cat > ansible.cfg << 'EOF'
+  297  [defaults]
+  298  inventory = ansible/inventories/dev/hosts.yml
+  299  roles_path = ansible/roles
+  300  host_key_checking = False
+  301  EOF
+  302  cat ansible.cfg
+  303  ansible-playbook ansible/playbooks/kubernetes.yml -u azureuser --private-key ~/.ssh/id_rsa
+  304  cat ansible/playbooks/kubernetes.yml
+  305  head -20 ansible/roles/kubernetes/tasks/main.yml
+  306  ssh azureuser@20.42.101.138
+  307  ssh azureuser@4.157.251.192
+  308  ssh azureuser@20.42.101.138
+  309  ssh azureuser@4.157.251.192
+  310  ssh azureuser@20.42.101.138
+  311  ansible all -m ping
+  312  kubectl get nodes -o wide
+  313  clear
+  314  ssh azureuser@20.42.101.138
+  315  curl -k https://localhost:31917
+  316  ssh azureuser@20.42.101.138
+  317  az network nsg rule list   --resource-group rg-k8s-dev-eastus   --nsg-name vm-k8s-cp01-dev-eastusNSG   -o table
+  318  az group list --query "[].name" -o tsv
+  319  az vm list -d -g rg-k8s-dev-eastus-001 -o table
+  320  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-c
+  321  argocd-server   NodePort   ...   80:31842/TCP,443:31917/TCP
+  322  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31917
+  323  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31842
+  324  clear
+  325  az network nsg rule list   --resource-group rg-k8s-dev-eastus-001   --query "[?contains(name,'open-port')].[name,priority,destinationPortRange]"   -o table
+  326  clear
+  327  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31917
+  328  clear
+  329  az vm open-port   --resource-group rg-k8s-dev-eastus-001   --name vm-k8s-cp01-dev-eastus   --port 31917
+  330  clear
+  331  ssh azureuse
+  332  logout
+  333  ssh azureuser@20.100.10.50
+  334  ssh azureuser@20.42.101.138
+  335  ssh -T git@github.com
+  336  git remote set-url origin git@github.com:dcube-g/azure-ansible-kubernetes-platform.git
+  337  git remote -v
+  338  cd azure-ansible-kubernetes-platform/
+  339  clear
+  340  ls -a
+  341  git remote -v
+  342  git remote set-url origin git@github.com:dcube-g/azure-ansible-kubernetes-platform.git
+  343  git remote add origin git@github.com:dcube-g/azure-ansible-kubernetes-platform.git
+  344  git add .
+  345  git commit -m "Completed Azure Kubernetes GitOps Platform"
+  346  git push -u origin main
+  347  git branch
+  348  git branch -M main
+  349  git push -u origin main
+  350  git push -u origin master
+  351  cd ~/azure-ansible-kubernetes-platform
+  352  git status
+  353  git branch -a
+  354  git log --oneline
+  355  cd ~/azure-ansible-kubernetes-platform
+  356  git add .
+  357  git commit -m "Initial commit - Azure Ansible Kubernetes GitOps Platform"
+  358  git log --oneline -1
+  359  git branch -M main
+  360  git push -u origin main
+  361  git status
+  362  git branch -a
+  363  git log --oneline
+  364  cd ~/azure-ansible-kubernetes-platform
+  365  nano README.md
+  366  git add README.md
+  367  git commit -m "Add professional project README"
+  368  git push origin main
+  369  git add screenshots/
+  370  git add README.md
+  371  git commit -m "Add project screenshots"
+  372  git push origin main
+  373  ansible kubernetes -m ping
+  374  cd ansible/
+  375  ansible kubernetes -m ping
+  376  clear
+  377  cd..
+  378  cd ..
+  379  ls
+  380  mkdir screenshots
+  381  cp /mnt/c/Users/pandora/Desktop/*.png screenshots/
+  382  cp /mnt/c/Users/pandora/screenshots/*.png screenshots/
+  383  ls 
+  384  cd screenshots/
+  385  ls
+  386  git add screenshots/
+  387  git add README.md
+  388  git commit -m "Add project screenshots"
+  389  git push origin main
+  390  cd ..
+  391  pwd
+  392  ls
+  393  git add README.md
+  394  git add screenshots/*
+  395  git commit -m "Add README and project screenshots"
+  396  git push origin main
+  397  history > ~/azure-ansible-kubernetes-platform/command-history.txt
+  398  cd ~/azure-ansible-kubernetes-platform
+  399  git add command-history.txt
+  400  git commit -m "Add project command history"
+  401  git push origin main
+  402  #!/bin/bash
+  403  # Script to delete all Azure resources for the Kubernetes project
+  404  # Run in WSL or Linux Bash
+  405  # List of resource groups to delete
+  406  RESOURCE_GROUPS=(     "rg-k8s-dev-eastus-001"     "NetworkWatcherRG"     "VisualStudioOnline-3553A7FE90DC408593217292BD7F6579" )
+  407  echo "Starting deletion of Azure resource groups..."
+  408  for RG in "${RESOURCE_GROUPS[@]}"; do     echo "Deleting resource group: $RG";     az group delete         --name "$RG"         --yes         --no-wait; done
+  409  echo "Deletion commands sent. Monitor Azure Portal or CLI for completion."
+  410  az login
+  411  clear
+  412  az login
+  413  clear
+  414  az group delete --name rg-k8s-dev-eastus-001 --yes --no-wait
+  415  az login
+  416  ssh -L 8080:localhost:8080 azureuser@20.42.101.138
+  417  az login
+  418  exit
+  419  cd /mnt/d/projects/logistic-shipping-service
+  420  code .
+  421  cd /mnt/d/projects/logistic-shipping-service
+  422  tree -a -L 4
+  423  apt install stree
+  424  apt install tree
+  425  tree -a -L 4
+  426  clear
+  427  .k8s/deployment.yaml
+  428  mkdir -p argocd/applications kubernetes/base kubernetes/overlays/production monitoring/grafana-dashboards docs
+  429  touch argocd/applications/logistics-tracker.yaml kubernetes/base/namespace.yaml kubernetes/base/service.yaml kubernetes/base/kustomization.yaml monitoring/prometheus-values.yaml docs/architecture.md docs/deployment-guide.md
+  430  kubectl get pods -n argocd
+  431  az acr show   --name acrfreelogistics   --resource-group rg-freelogistics-prod-eastus   --output table
+  432  az acr show   --name acrfreelogistics   --resource-group rg-freelogistics-prod-eastus   --output table
+  433  NAME              RESOURCE GROUP                LOCATION    SKU    LOGIN SERVER                 CREATION DATE         ADMIN ENABLED
+  434  ----------------  ----------------------------  ----------  -----  ---------------------------  --------------------  ---------------
+  435  acrfreelogistics  rg-freelogistics-prod-eastus  eastus      Basic  acrfreelogistics.azurecr.io  2026-06-19T15:11:05Z  True
+  436  root@Penguin:/mnt/d/projects/logistic-shipping-service# az acr show   --name acrfreelogistics   --resource-group rg-freelogistics-prod-eastus   --output table
+  437  NAME              RESOURCE GROUP                LOCATION    SKU    LOGIN SERVER                 CREATION DATE         ADMIN ENABLED
+  438  ----------------  ----------------------------  ----------  -----  ---------------------------  --------------------  ---------------
+  439  acrfreelogistics  rg-freelogistics-prod-eastus  eastus      Basic  acrfreelogistics.azurecr.io  2026-06-19T15:11:05Z  True
+  440  root@Penguin:/mnt/d/projects/logistic-shipping-service#
+  441  clear
+  442  kubectl get pods -n argocd
+  443  az acr show --name acrfreelogistics --output table
+  444  az aks update   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --attach-acr acrfreelogistics
+  445  z aks check-acr   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --acr acrfreelogistics
+  446  az aks check-acr   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --acr acrfreelogistics
+  447  kubectl create namespace logistic-shipping-prod
+  448  kubectl get ns
+  449  kubectl get pods -n argocd
+  450  mkdir -p argocd/applications
+  451  mkdir -p kubernetes/base
+  452  mkdir -p kubernetes/overlays/production
+  453  ls
+  454  cd kubernetes/
+  455  ls
+  456  clear
+  457  mv .k8s/deployment.yaml kubernetes/base/deployment.yaml
+  458  pwd
+  459  find .. -maxdepth 2 -type f | sort
+  460  cd /mnt/d/projects/logistic-shipping-service
+  461  mkdir -p kubernetes/base
+  462  mv .k8s/deployment.yaml kubernetes/base/deployment.yaml
+  463  find .. -name deployment.yaml
+  464  rmdir ../.k8s
+  465  cd /mnt/d/projects/logistic-shipping-service
+  466  tree -L 3
+  467  # 2. Add the official HashiCorp Linux repository configuration
+  468  ls -lah "# 2. Add the official HashiCorp Linux repository configuration"
+  469  find .github -type f
+  470  cat argocd/applications/logistics-tracker.yaml
+  471  ls -lh argocd/applications/logistics-tracker.yaml
+  472  ls -lh kubernetes/base
+  473  kubectl get pods -n argocd
+  474  clear
+  475  az aks check-acr   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --acr acrfreelogistics
+  476  kubectl create namespace infra-monitoring
+  477  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  478  helm repo update
+  479  helm install monitoring   prometheus-community/kube-prometheus-stack   -n infra-monitoring
+  480  helm list -n infra-monitoring
+  481  kubectl get pods -n infra-monitoring
+  482  kubectl get all -n infra-monitoring
+  483  ubectl get all -n infra-monitoring
+  484  clear
+  485  helm list -n infra-monitoring
+  486  kubectl get pods -n infra-monitoring
+  487  kubectl get pods -n argocd
+  488  ls -lh kubernetes/base
+  489  cat kubernetes/base/namespace.yaml
+  490  cat kubernetes/base/service.yaml
+  491  cat kubernetes/base/kustomization.yaml
+  492  cat kubernetes/base/deployment.yaml
+  493  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+  494  echo
+  495  kubectl get secret -n infra-monitoring monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 -d
+  496  echo
+  497  az aks check-acr   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --acr acrfreelogistics
+  498  s -lh kubernetes/base
+  499  cat kubernetes/base/kustomization.yaml
+  500  ls -lh kubernetes/base
+  501  cat kubernetes/base/kustomization.yaml
+  502  clear
+  503  ls -lh kubernetes/base
+  504  cat kubernetes/base/kustomization.yaml
+  505  nano kubernetes/base/namespace.yaml
+  506  cat kubernetes/base/deployment.yaml
+  507  kubectl kustomize kubernetes/base
+  508  kubectl apply --dry-run=client -k kubernetes/base
+  509  cat kubernetes/base/deployment.yaml
+  510  kubectl apply --dry-run=client -k kubernetes/base
+  511  ls -lh kubernetes/base/kustomization.yaml
+  512  cat kubernetes/base/kustomization.yaml
+  513  cat > kubernetes/base/kustomization.yaml <<'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+EOF
+
+  514  cat kubernetes/base/kustomization.yaml
+  515  ls -lh kubernetes/base
+  516  cat kubernetes/base/namespace.yaml
+  517  cat kubernetes/base/service.yaml
+  518  kubectl apply --dry-run=client -k kubernetes/base
+  519  cat kubernetes/base/deployment.yaml
+  520  nl -ba kubernetes/base/deployment.yaml
+  521  kubectl apply --dry-run=client -f kubernetes/base/deployment.yaml
+  522  editing with visual code
+  523  clear
+  524  kubectl apply --dry-run=client -k kubernetes/base
+  525  kubectl apply -k kubernetes/base
+  526  kubectl get all -n logistic-shipping-prod
+  527  kubectl describe pod -n logistic-shipping-prod $(kubectl get pod -n logistic-shipping-prod -o name | head -1)
+  528  az acr repository list   --name acrfreelogistics   --output table
+  529  clear
+  530  kubectl describe pod -n logistic-shipping-prod $(kubectl get pod -n logistic-shipping-prod -o name | head -1)
+  531  kubectl describe $(kubectl get pod -n logistic-shipping-prod -o name | head -1) -n logistic-shipping-prod
+  532  kubectl describe $(kubectl get pod -n logistic-shipping-prod -o name | head -1) -n logistic-shipping-prod
+  533  az acr repository list   --name acrfreelogistics   --output table
+  534  az acr check-health -n
+  535  az acr repository list   --name acrfreelogistics   --output table
+  536  az aks check-acr   --resource-group rg-freelogistics-prod-eastus   --name aks-freelogistics-prod-01   --acr acrfreelogistics
+  537  acrfreelogistics.azurecr.io/shipping-service:latest
+  538  docker --version
+  539  cd /mnt/d/projects/logistic-shipping-service
+  540  docker build -t shipping-service:latest .
+  541  pwd
+  542  find . -maxdepth 2 -type f | sort
+  543  mkdir -p src
+  544  cd src
+  545  go mod init logistics-tracker
+  546  apt install go
+  547  snap install go
+  548  go version
+  549  sudo apt update
+  550  sudo apt install -y golang-go
+  551  go version
+  552  cd /mnt/d/projects/logistic-shipping-service/src
+  553  go mod init logistics-tracker
+  554  cat > main.go <<'EOF'
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "OK")
+}
+
+func trackHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, `{"trackingId":"TRK001","status":"IN_TRANSIT","location":"Memphis Hub"}`)
+}
+
+func main() {
+    http.HandleFunc("/healthz", healthHandler)
+    http.HandleFunc("/track", trackHandler)
+
+    fmt.Println("Server running on :8080")
+    http.ListenAndServe(":8080", nil)
+}
+EOF
+
+  555  go mod tidy
+  556  ls -la
+  557  cd /mnt/d/projects/logistic-shipping-service/src
+  558  go mod tidy
+  559  ls -la
+  560  go mod  tidy
+  561  ls -la
+  562  cat go.md
+  563  FROM golang:1.22-alpine AS builder
+  564  WORKDIR /app
+  565  COPY src/go.mod ./
+  566  COPY src/ .
+  567  RUN go build -o shipping-service .
+  568  FROM alpine:3.20
+  569  WORKDIR /app
+  570  COPY --from=builder /app/shipping-service .
+  571  EXPOSE 8080
+  572  CMD ["./shipping-service"]
+  573  clear
+  574  ls -la
+  575  cat /mnt/d/projects/logistic-shipping-service/Dockerfile
+  576  COPY go.mod go.sum ./
+  577  COPY . .
+  578  clear
+  579  ls
+  580  cd /mnt/d/projects/logistic-shipping-service
+  581  docker build -t shipping-service:latest .
+  582  az acr login --name acrfreelogistics
+  583  docker tag shipping-service:latest   acrfreelogistics.azurecr.io/shipping-service:latest
+  584  docker push   acrfreelogistics.azurecr.io/shipping-service:latest
+  585  az acr repository list   --name acrfreelogistics   --output table
+  586  kubectl rollout restart deployment/shipping-service   -n logistic-shipping-prod
+  587  kubectl get pods -n logistic-shipping-prod -w
+  588  kubectl port-forward svc/shipping-service-svc   -n logistic-shipping-prod   8080:80
+  589  clear
+  590  kubectl get deployment -n logistic-shipping-prod
+  591  kubectl get pods -n logistic-shipping-prod
+  592  kubectl port-forward svc/shipping-service-svc   -n logistic-shipping-prod   8080:80
+  593  clear
+  594  ss -tulpn | grep 8080
+  595  ps -fp 79832
+  596  kubectl port-forward svc/shipping-service-svc -n logistic-shipping-prod 8081:80
+  597  history > command-history.txt
